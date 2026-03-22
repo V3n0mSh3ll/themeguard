@@ -1,0 +1,124 @@
+rule wp_hook_backdoor : wordpress hook {
+    severity = "critical"
+    description = "Malicious code injected via WordPress action/filter hooks"
+    strings:
+        $s1 = /add_action\s*\(\s*['"]init['"]\s*,\s*function\s*\(\)\s*\{.*?eval/s
+        $s2 = /add_action\s*\(\s*['"]wp_head['"]\s*,\s*function\s*\(\)\s*\{.*?(base64_decode|eval|system)/s
+        $s3 = /add_action\s*\(\s*['"]wp_footer['"]\s*,\s*function\s*\(\)\s*\{.*?<script/s
+        $s4 = /add_action\s*\(\s*['"]shutdown['"]\s*,\s*function\s*\(\)\s*\{.*?(eval|file_put_contents)/s
+    condition:
+        any of them
+}
+
+rule wp_cron_persistence : wordpress persistence {
+    severity = "critical"
+    description = "Persistent backdoor via WordPress cron scheduling"
+    strings:
+        $s1 = "wp_schedule_event" fullword
+        $s2 = "wp_schedule_single_event" fullword
+        $s3 = /eval\s*\(/
+        $s4 = /file_get_contents\s*\(\s*['"]https?:/
+        $s5 = "shell_exec" fullword
+    condition:
+        ($s1 or $s2) and ($s3 or $s4 or $s5)
+}
+
+rule wp_option_payload : wordpress database {
+    severity = "critical"
+    description = "Encoded payload stored in WordPress options table"
+    strings:
+        $s1 = /update_option\s*\(.+?base64_decode/
+        $s2 = /update_option\s*\(.+?gzinflate/
+        $s3 = /update_option\s*\(.+?unserialize/
+        $s4 = /add_option\s*\(.+?base64_decode/
+    condition:
+        any of them
+}
+
+rule wp_user_injection : wordpress privilege {
+    severity = "critical"
+    description = "Hidden admin account creation via WordPress functions"
+    strings:
+        $s1 = "wp_insert_user" fullword
+        $s2 = "wp_create_user" fullword
+        $s3 = "administrator" fullword
+        $s4 = "manage_options" fullword
+        $s5 = /\$_(GET|POST|REQUEST)\s*\[/
+    condition:
+        ($s1 or $s2) and ($s3 or $s4) and $s5
+}
+
+rule wp_rest_backdoor : wordpress rest {
+    severity = "critical"
+    description = "Unauthenticated REST API endpoint executing dangerous code"
+    strings:
+        $s1 = "register_rest_route" fullword
+        $s2 = "__return_true" fullword
+        $s3 = /eval\s*\(/
+        $s4 = "system(" fullword
+        $s5 = "shell_exec(" fullword
+    condition:
+        $s1 and $s2 and ($s3 or $s4 or $s5)
+}
+
+rule wp_nonce_bypass : wordpress authentication {
+    severity = "high"
+    description = "AJAX handler without nonce verification"
+    strings:
+        $s1 = /add_action\s*\(\s*['"]wp_ajax_nopriv_/
+        $s2 = "wp_verify_nonce" fullword
+        $s3 = "check_ajax_referer" fullword
+        $s4 = "check_admin_referer" fullword
+    condition:
+        $s1 and not ($s2 or $s3 or $s4)
+}
+
+rule wp_update_hijack : wordpress update {
+    severity = "critical"
+    description = "WordPress auto-update redirected to malicious server"
+    strings:
+        $s1 = "pre_set_site_transient_update_plugins" fullword
+        $s2 = "pre_set_site_transient_update_themes" fullword
+        $s3 = /['"]package['"]\s*=>\s*['"](https?:\/\/)/
+        $s4 = "site_transient_update_" fullword
+    condition:
+        ($s1 or $s2 or $s4) and $s3
+}
+
+rule wp_db_injection : wordpress database {
+    severity = "critical"
+    description = "Direct unsanitized database query in WordPress"
+    strings:
+        $s1 = /\$wpdb\s*->\s*query\s*\(\s*[^)]*\$_(GET|POST|REQUEST)/
+        $s2 = /\$wpdb\s*->\s*get_results\s*\(\s*[^)]*\$_(GET|POST|REQUEST)/
+        $s3 = /\$wpdb\s*->\s*get_var\s*\(\s*[^)]*\$_(GET|POST|REQUEST)/
+        $s4 = /\$wpdb\s*->\s*get_row\s*\(\s*[^)]*\$_(GET|POST|REQUEST)/
+    condition:
+        any of them
+}
+
+rule wp_file_manager_shell : wordpress filemanager {
+    severity = "critical"
+    description = "File manager backdoor disguised as WordPress functionality"
+    strings:
+        $s1 = /\$_(POST|GET|REQUEST)\s*\[\s*['"]action['"]\s*\]\s*==\s*['"]upload['"]/
+        $s2 = "move_uploaded_file" fullword
+        $s3 = /\$_(POST|GET|REQUEST)\s*\[\s*['"]action['"]\s*\]\s*==\s*['"]delete['"]/
+        $s4 = /\$_(POST|GET|REQUEST)\s*\[\s*['"]action['"]\s*\]\s*==\s*['"]edit['"]/
+        $s5 = "file_put_contents" fullword
+    condition:
+        3 of them
+}
+
+rule wp_theme_injector : wordpress theme {
+    severity = "critical"
+    description = "Theme file injector that modifies other theme files"
+    strings:
+        $s1 = "get_theme_root" fullword
+        $s2 = "wp_get_themes" fullword
+        $s3 = "file_put_contents" fullword
+        $s4 = "functions.php" fullword
+        $s5 = /glob\s*\(\s*.*?\/\*\.php/
+    condition:
+        ($s1 or $s2) and $s3 and ($s4 or $s5)
+}

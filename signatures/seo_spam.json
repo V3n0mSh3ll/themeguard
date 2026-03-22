@@ -1,0 +1,15 @@
+[
+  {"id": "seo_hidden_div", "pattern": "<div[^>]*style\\s*=\\s*['\"][^'\"]*(?:display\\s*:\\s*none|visibility\\s*:\\s*hidden|position\\s*:\\s*absolute\\s*;\\s*(?:left|top)\\s*:\\s*-\\d{3,})[^'\"]*['\"][^>]*>.*<a\\s+href", "severity": "high", "description": "Hidden div containing links - SEO spam injection"},
+  {"id": "seo_hidden_links", "pattern": "<a[^>]*style\\s*=\\s*['\"][^'\"]*(?:font-size\\s*:\\s*0|display\\s*:\\s*none|color\\s*:\\s*(?:#fff|white|transparent))[^'\"]*['\"]", "severity": "high", "description": "Invisible link - SEO spam technique"},
+  {"id": "seo_pharma_keywords", "pattern": "(?:viagra|cialis|levitra|kamagra|pharmacy|erectile|\\bED\\b pills|tadalafil|sildenafil)", "severity": "high", "description": "Pharmaceutical spam keywords detected"},
+  {"id": "seo_gambling", "pattern": "(?:online\\s*casino|poker\\s*online|sports\\s*betting|slot\\s*machine|blackjack\\s*online)", "severity": "high", "description": "Gambling spam keywords detected"},
+  {"id": "seo_japanese_spam", "pattern": "[\\u3040-\\u30FF\\u4E00-\\u9FAF]{5,}.*<a\\s+href", "severity": "medium", "description": "Japanese SEO spam (CJK characters with links)"},
+  {"id": "seo_doorway", "pattern": "header\\s*\\(\\s*['\"]Location.*(?:pharmacy|casino|cheap|buy|order|discount)", "severity": "high", "description": "Doorway page redirect to spam site"},
+  {"id": "seo_cloaking", "pattern": "(?:googlebot|bingbot|yahoo|spider|crawler|bot).*(?:redirect|header|include)", "severity": "high", "description": "Search engine cloaking detected"},
+  {"id": "seo_link_farm", "pattern": "(?:<a[^>]*href[^>]*>){10,}", "severity": "medium", "description": "Excessive link density - possible link farm"},
+  {"id": "seo_hidden_iframe", "pattern": "<iframe[^>]*(?:width\\s*=\\s*['\"]?[01]['\"]?|height\\s*=\\s*['\"]?[01]['\"]?|style\\s*=\\s*['\"][^'\"]*(?:display\\s*:\\s*none|visibility\\s*:\\s*hidden))", "severity": "high", "description": "Hidden iframe injection"},
+  {"id": "seo_external_iframe", "pattern": "<iframe[^>]*src\\s*=\\s*['\"]https?://(?!(?:www\\.)?(?:youtube|vimeo|google|maps\\.google))", "severity": "medium", "description": "External iframe from non-trusted source"},
+  {"id": "seo_meta_refresh", "pattern": "<meta[^>]*http-equiv\\s*=\\s*['\"]refresh['\"][^>]*url\\s*=", "severity": "medium", "description": "Meta refresh redirect - possible doorway page"},
+  {"id": "seo_wp_footer_inject", "pattern": "add_action\\s*\\(\\s*['\"]wp_footer['\"].*(?:echo|print).*<(?:a|div|iframe|script)", "severity": "high", "description": "HTML injection via wp_footer hook"},
+  {"id": "seo_base64_html", "pattern": "echo\\s+base64_decode\\s*\\(.*<(?:a|div|iframe|script)", "severity": "critical", "description": "Base64-encoded HTML output - hidden content injection"}
+]

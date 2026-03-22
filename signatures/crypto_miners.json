@@ -1,0 +1,15 @@
+[
+  {"id": "cm_coinhive", "pattern": "(?:coinhive|CoinHive)\\.(?:Anonymous|Token|User)", "severity": "critical", "description": "CoinHive cryptocurrency miner detected"},
+  {"id": "cm_coinhive_script", "pattern": "coinhive\\.min\\.js|coin-hive\\.com", "severity": "critical", "description": "CoinHive script include"},
+  {"id": "cm_cryptoloot", "pattern": "(?:crypto-?loot|CryptoLoot)", "severity": "critical", "description": "CryptoLoot cryptocurrency miner"},
+  {"id": "cm_coinimp", "pattern": "(?:coinimp|CoinIMP)\\.(?:com|Anonymous)", "severity": "critical", "description": "CoinIMP miner detected"},
+  {"id": "cm_jsecoin", "pattern": "(?:jsecoin|JSEcoin)", "severity": "critical", "description": "JSEcoin browser miner"},
+  {"id": "cm_webminepool", "pattern": "webminepool", "severity": "critical", "description": "WebMinePool miner detected"},
+  {"id": "cm_minero", "pattern": "(?:minero\\.cc|minr\\.pw)", "severity": "critical", "description": "Minero/Minr browser miner"},
+  {"id": "cm_xmrig_wasm", "pattern": "(?:xmrig|cryptonight)\\.(?:wasm|js)", "severity": "critical", "description": "XMRig WebAssembly miner"},
+  {"id": "cm_stratum", "pattern": "stratum\\+tcp://", "severity": "critical", "description": "Mining pool stratum protocol URL"},
+  {"id": "cm_monero_addr", "pattern": "4[0-9AB][0-9a-zA-Z]{93}", "severity": "high", "description": "Possible Monero wallet address"},
+  {"id": "cm_wasm_miner", "pattern": "\\.wasm.*(?:mine|hash|crypto)", "severity": "high", "description": "WebAssembly file with mining-related naming"},
+  {"id": "cm_worker_miner", "pattern": "new\\s+Worker\\s*\\(.*(?:mine|hash|crypto)", "severity": "high", "description": "Web Worker spawned for mining"},
+  {"id": "cm_deepminer", "pattern": "deepMiner|deep-miner", "severity": "critical", "description": "DeepMiner crypto miner"}
+]

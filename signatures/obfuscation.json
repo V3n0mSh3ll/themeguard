@@ -1,0 +1,18 @@
+[
+  {"id": "ob_str_rot13", "pattern": "str_rot13\\s*\\(\\s*['\"][A-Za-z]{20,}", "severity": "high", "description": "str_rot13() encoding on long string"},
+  {"id": "ob_hex2bin", "pattern": "hex2bin\\s*\\(\\s*['\"][0-9a-fA-F]{20,}", "severity": "high", "description": "hex2bin() decoding embedded hex payload"},
+  {"id": "ob_pack_h", "pattern": "pack\\s*\\(\\s*['\"]H\\*['\"]", "severity": "high", "description": "pack('H*') - hex-to-binary conversion"},
+  {"id": "ob_chr_concat", "pattern": "(?:chr\\s*\\(\\s*\\d+\\s*\\)\\s*\\.\\s*){5,}", "severity": "high", "description": "String built by concatenating chr() calls"},
+  {"id": "ob_error_suppress", "pattern": "@(?:eval|assert|system|exec|passthru|shell_exec|base64_decode)\\s*\\(", "severity": "critical", "description": "Error suppression on dangerous function"},
+  {"id": "ob_concat_var_func", "pattern": "\\$[a-z]{1,2}\\s*=\\s*['\"][a-z_]+['\"]\\s*;.*\\$[a-z]{1,2}\\s*\\(", "severity": "high", "description": "Variable-constructed function call pattern"},
+  {"id": "ob_reverse_string", "pattern": "strrev\\s*\\(\\s*['\"](?:edoced_46esab|cexe_llehs|urhtssap|metsys|lave)", "severity": "critical", "description": "Function name hidden via strrev()"},
+  {"id": "ob_gzinflate_chain", "pattern": "gzinflate\\s*\\(\\s*base64_decode\\s*\\(", "severity": "critical", "description": "gzinflate(base64_decode()) decompression chain"},
+  {"id": "ob_rawurldecode", "pattern": "rawurldecode\\s*\\(\\s*['\"]%[0-9a-fA-F]{2}", "severity": "medium", "description": "URL-encoded payload being decoded"},
+  {"id": "ob_convert_uudecode", "pattern": "convert_uudecode\\s*\\(", "severity": "high", "description": "UUdecode - uncommon encoding used to hide payload"},
+  {"id": "ob_base_convert", "pattern": "base_convert\\s*\\(\\s*['\"]\\d+['\"]\\s*,\\s*\\d+\\s*,\\s*36\\s*\\)", "severity": "high", "description": "base_convert() used to build function names from numbers"},
+  {"id": "ob_compact_code", "pattern": "\\$[a-z]=['\"][a-z]+['\"];\\$[a-z]=['\"][a-z]+['\"];.*\\$[a-z]\\(\\$[a-z]\\(", "severity": "high", "description": "Compact variable-chained code execution"},
+  {"id": "ob_preg_callback", "pattern": "preg_replace_callback\\s*\\(.*(?:eval|assert|base64|create_function)", "severity": "critical", "description": "preg_replace_callback with execution in callback"},
+  {"id": "ob_array_pop_exec", "pattern": "array_(?:pop|shift|splice)\\s*\\(.*(?:eval|assert|exec)", "severity": "high", "description": "Array manipulation to construct execution"},
+  {"id": "ob_str_replace_build", "pattern": "str_replace\\s*\\(.*(?:eval|assert|system|exec)", "severity": "high", "description": "Building dangerous function name via str_replace"},
+  {"id": "ob_substr_build", "pattern": "substr\\s*\\([^,]+,\\s*\\d+\\s*,\\s*\\d+\\s*\\)\\s*\\.\\s*substr", "severity": "medium", "description": "String slicing to reconstruct obfuscated content"}
+]

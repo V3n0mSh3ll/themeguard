@@ -1,0 +1,17 @@
+[
+  {"id": "fa_double_ext_php_jpg", "pattern": "\\.(?:jpg|jpeg|png|gif|ico|bmp)\\.php", "severity": "critical", "description": "Double extension: image.php - hidden PHP behind image name"},
+  {"id": "fa_double_ext_php_img", "pattern": "\\.php\\.(?:jpg|jpeg|png|gif|ico|bmp)", "severity": "critical", "description": "Double extension: php.image - PHP disguised as image"},
+  {"id": "fa_wp_vcd", "pattern": "wp-vcd\\.php|class[.-]theme[.-]modules\\.php", "severity": "critical", "description": "Known WP-VCD malware file"},
+  {"id": "fa_wp_tmp", "pattern": "wp-tmp\\.php|wp-feed\\.php|wp-conf\\.php", "severity": "critical", "description": "Known WordPress backdoor filename"},
+  {"id": "fa_ico_php", "pattern": "<\\?php.*\\.ico$", "severity": "critical", "description": "PHP code inside .ico file"},
+  {"id": "fa_htaccess_rewrite", "pattern": "RewriteRule.*\\.(php|phtml|php[3-7])\\s+\\[", "severity": "high", "description": ".htaccess rewrite targeting PHP files"},
+  {"id": "fa_htaccess_handler", "pattern": "AddHandler\\s+(?:application/x-httpd-php|cgi-script)\\s+\\.(?:jpg|png|gif|txt|ico)", "severity": "critical", "description": ".htaccess making non-PHP files executable"},
+  {"id": "fa_htaccess_type", "pattern": "AddType\\s+application/x-httpd-php\\s+\\.(?:jpg|png|gif|txt|ico)", "severity": "critical", "description": ".htaccess adding PHP handler to image extensions"},
+  {"id": "fa_nulled_marker", "pattern": "(?:nulled|cracked|leaked|warez|pirated)", "severity": "medium", "description": "Nulled/cracked software marker found"},
+  {"id": "fa_license_bypass", "pattern": "(?:license|activation|register).*(?:bypass|crack|keygen|patch|null)", "severity": "high", "description": "License bypass or crack mechanism"},
+  {"id": "fa_envato_tamper", "pattern": "(?:envato|themeforest|codecanyon).*(?:null|crack|free|bypass)", "severity": "high", "description": "Envato/ThemeForest license tampering"},
+  {"id": "fa_timthumb_vuln", "pattern": "timthumb\\.php|thumb\\.php|(?:tim|phpthumb|image)\\.php.*\\$src", "severity": "high", "description": "TimThumb or similar vulnerable image handler"},
+  {"id": "fa_admin_ajax_custom", "pattern": "wp_ajax_nopriv_.*(?:eval|exec|system|base64)", "severity": "critical", "description": "Custom AJAX handler with dangerous operations"},
+  {"id": "fa_cron_backdoor", "pattern": "wp_schedule_(?:event|single_event)\\s*\\(.*(?:eval|base64|exec|curl)", "severity": "critical", "description": "WordPress cron job backdoor"},
+  {"id": "fa_theme_update_fake", "pattern": "wp_remote_(?:get|post).*(?:update|version|check).*(?!api\\.wordpress\\.org)", "severity": "high", "description": "Fake theme update check phoning home"}
+]

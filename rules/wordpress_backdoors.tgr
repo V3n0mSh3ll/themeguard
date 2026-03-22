@@ -1,0 +1,254 @@
+rule wp_vcd_malware : malware dropper {
+    severity = "critical"
+    description = "WP-VCD malware injection pattern"
+    strings:
+        $s1 = "wp-vcd.php" nocase
+        $s2 = "class.theme-modules.php" nocase
+        $s3 = "wp_cd_code"
+        $s4 = "install_flavor"
+        $s5 = "theme-flavor" nocase
+    condition:
+        2 of them
+}
+
+rule c99_shell : webshell {
+    severity = "critical"
+    description = "c99 webshell detected"
+    strings:
+        $s1 = "c99shell" nocase fullword
+        $s2 = "c99_buff_prepare"
+        $s3 = "c99sh_" fullword
+        $s4 = "c99ftpbrutecheck"
+    condition:
+        any of them
+}
+
+rule r57_shell : webshell {
+    severity = "critical"
+    description = "r57 webshell detected"
+    strings:
+        $s1 = "r57shell" nocase fullword
+        $s2 = "r57_" fullword
+        $s3 = "Safe_Mode" fullword
+        $s4 = "phpinfo()" fullword
+    condition:
+        2 of them
+}
+
+rule wso_shell : webshell {
+    severity = "critical"
+    description = "WSO webshell detected"
+    strings:
+        $s1 = "WSO " fullword
+        $s2 = "Web Shell by" nocase
+        $s3 = "FilesMan" fullword
+        $s4 = "wso_version"
+    condition:
+        any of them
+}
+
+rule alfa_shell : webshell {
+    severity = "critical"
+    description = "Alfa Shell webshell detected"
+    strings:
+        $s1 = "AlfaTeam" nocase fullword
+        $s2 = "Alfa Shell" nocase
+        $s3 = "STARTER" fullword
+        $s4 = "alfa_jb"
+    condition:
+        2 of them
+}
+
+rule b374k_shell : webshell {
+    severity = "critical"
+    description = "b374k webshell detected"
+    strings:
+        $s1 = "b374k" fullword
+        $s2 = "b374k shell"
+        $s3 = "b374k_config"
+    condition:
+        any of them
+}
+
+rule generic_backdoor : backdoor {
+    severity = "critical"
+    description = "Generic PHP backdoor: user input directly executed"
+    strings:
+        $s1 = /eval\s*\(\s*\$_(GET|POST|REQUEST|COOKIE)/
+        $s2 = /assert\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s3 = /system\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s4 = /passthru\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s5 = /shell_exec\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s6 = /exec\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s7 = /popen\s*\(\s*\$_(GET|POST|REQUEST)/
+    condition:
+        any of them
+}
+
+rule base64_shell : backdoor obfuscation {
+    severity = "critical"
+    description = "Base64-encoded shell execution from user input"
+    strings:
+        $s1 = /eval\s*\(\s*base64_decode\s*\(\s*\$_(GET|POST|REQUEST|COOKIE)/
+        $s2 = /assert\s*\(\s*base64_decode\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s3 = /system\s*\(\s*base64_decode\s*\(\s*\$_(GET|POST|REQUEST)/
+    condition:
+        any of them
+}
+
+rule obfuscated_eval : obfuscation {
+    severity = "critical"
+    description = "Obfuscated eval through string manipulation"
+    strings:
+        $s1 = /\$\w+\s*=\s*['"]ev['"].*?['"]al['"]/
+        $s2 = /\$\w+\s*=\s*str_replace\s*\(.+?(eval|assert|system)/
+        $s3 = /\$\w+\s*=\s*strrev\s*\(\s*['"](tropssap|cexe|metsys|lave)['"]/
+        $s4 = /\$\w+\(\s*\$\w+\(\s*\$\w+\(\s*\$_(GET|POST|REQUEST)/
+    condition:
+        any of them
+}
+
+rule uploader_backdoor : backdoor upload {
+    severity = "critical"
+    description = "Unauthorized file upload backdoor"
+    strings:
+        $s1 = /move_uploaded_file\s*\(\s*\$_FILES/
+        $s2 = /copy\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s3 = /file_put_contents\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s4 = "multipart/form-data" nocase
+    condition:
+        $s1 and ($s4 or $s2 or $s3)
+}
+
+rule mailer_backdoor : backdoor spam {
+    severity = "high"
+    description = "PHP mailer backdoor for spam operations"
+    strings:
+        $s1 = /mail\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s2 = "wp_mail" fullword
+        $s3 = /\$_(POST|REQUEST)\s*\[\s*['"]subject['"]\s*\]/i
+        $s4 = /\$_(POST|REQUEST)\s*\[\s*['"]to['"]\s*\]/i
+    condition:
+        $s1 or (3 of them)
+}
+
+rule crypto_miner : miner {
+    severity = "high"
+    description = "Cryptocurrency miner injection"
+    strings:
+        $s1 = "coinhive" nocase fullword
+        $s2 = "CoinImp" nocase fullword
+        $s3 = "cryptonight" nocase fullword
+        $s4 = "minero.cc" nocase
+        $s5 = "jsecoin" nocase fullword
+        $s6 = "webminepool" nocase
+        $s7 = "hashrate" fullword
+    condition:
+        any of them
+}
+
+rule seo_spam_injector : seo spam {
+    severity = "high"
+    description = "SEO spam link injection detected"
+    strings:
+        $s1 = /wp_options.*?siteurl/i
+        $s2 = "pharma" nocase fullword
+        $s3 = "viagra" nocase fullword
+        $s4 = "cialis" nocase fullword
+        $s5 = /href\s*=\s*['"]\s*http.+?(pill|pharma|drug|casino|poker)/i
+    condition:
+        2 of them
+}
+
+rule anonymousfox : backdoor {
+    severity = "critical"
+    description = "AnonymousFox backdoor toolkit"
+    strings:
+        $s1 = "AnonymousFox" nocase
+        $s2 = "Fox" nocase fullword
+        $s3 = "cpanel" nocase fullword
+        $s4 = "/home/" fullword
+        $s5 = ".htaccess" fullword
+    condition:
+        $s1 or ($s2 and $s3 and $s4)
+}
+
+rule encoded_payload_chain : obfuscation {
+    severity = "critical"
+    description = "Multi-layer encoding chain (gzinflate + base64 + eval)"
+    strings:
+        $s1 = /eval\s*\(\s*gzinflate\s*\(\s*base64_decode/
+        $s2 = /eval\s*\(\s*gzuncompress\s*\(\s*base64_decode/
+        $s3 = /eval\s*\(\s*gzdecode\s*\(\s*base64_decode/
+        $s4 = /eval\s*\(\s*str_rot13\s*\(\s*base64_decode/
+    condition:
+        any of them
+}
+
+rule hidden_admin_creator : backdoor privilege {
+    severity = "critical"
+    description = "Hidden WordPress admin account creation"
+    strings:
+        $s1 = "wp_insert_user" fullword
+        $s2 = "administrator" fullword
+        $s3 = /\$_(GET|POST|REQUEST)\s*\[\s*['"]pass/i
+        $s4 = "add_role" fullword
+        $s5 = "user_register" fullword
+    condition:
+        $s1 and ($s2 or $s3)
+}
+
+rule reverse_shell_php : backdoor shell {
+    severity = "critical"
+    description = "PHP reverse shell connection"
+    strings:
+        $s1 = "fsockopen" fullword
+        $s2 = "socket_create" fullword
+        $s3 = "/bin/sh" fullword
+        $s4 = "cmd.exe" fullword
+        $s5 = /exec\s*\(\s*['"](bash|sh|cmd)/
+    condition:
+        ($s1 or $s2) and ($s3 or $s4 or $s5)
+}
+
+rule disable_security : evasion {
+    severity = "high"
+    description = "Security feature disable attempt"
+    strings:
+        $s1 = /ini_set\s*\(\s*['"]display_errors['"]\s*,\s*['"0'"]/
+        $s2 = /error_reporting\s*\(\s*0\s*\)/
+        $s3 = /ini_set\s*\(\s*['"]log_errors['"]\s*,\s*['"0'"]/
+        $s4 = "@ini_set" fullword
+        $s5 = /set_time_limit\s*\(\s*0\s*\)/
+    condition:
+        3 of them
+}
+
+rule dropper : backdoor dropper {
+    severity = "critical"
+    description = "Remote payload dropper (download + write + execute)"
+    strings:
+        $dl1 = "file_get_contents" fullword
+        $dl2 = "curl_exec" fullword
+        $dl3 = "wp_remote_get" fullword
+        $wr1 = "file_put_contents" fullword
+        $wr2 = "fwrite" fullword
+        $ex1 = "eval" fullword
+        $ex2 = "include" fullword
+        $ex3 = "require" fullword
+    condition:
+        ($dl1 or $dl2 or $dl3) and ($wr1 or $wr2) and ($ex1 or $ex2 or $ex3)
+}
+
+rule database_manipulation : backdoor sqli {
+    severity = "critical"
+    description = "Direct database manipulation via user input"
+    strings:
+        $s1 = /\$wpdb\s*->\s*query\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s2 = /mysql_query\s*\(\s*\$_(GET|POST|REQUEST)/
+        $s3 = /mysqli_query\s*\(.+?\$_(GET|POST|REQUEST)/
+        $s4 = "DROP TABLE" nocase fullword
+        $s5 = "TRUNCATE TABLE" nocase fullword
+    condition:
+        any of them
+}
