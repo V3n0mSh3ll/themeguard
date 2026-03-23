@@ -21,7 +21,7 @@
 
 ThemeGuard is a **WordPress-focused** static and behavioral malware scanner with recursive payload decoding, confidence scoring, cross-file correlation, cloud threat intelligence, and real-time watch mode.
 
-Unlike generic security tools, ThemeGuard understands **WordPress internals** — hooks, cron persistence, REST API backdoors, nonce bypasses, option table poisoning, and more.
+Unlike generic security tools, ThemeGuard understands **WordPress internals** - hooks, cron persistence, REST API backdoors, nonce bypasses, option table poisoning, and more.
 
 ---
 
@@ -36,7 +36,7 @@ Unlike generic security tools, ThemeGuard understands **WordPress internals** �
 - **30 custom `.tgr` threat rules** (WordPress-specific)
 - **Aho-Corasick O(n)** multi-pattern matching
 - **Recursive payload decoder** (8-depth: b64→hex→chr→rot13→gzinflate)
-- **ML classifier** — 26-feature statistical risk scoring
+- **ML classifier** - 26-feature statistical risk scoring
 
 </td>
 <td width="50%">
@@ -54,9 +54,9 @@ Unlike generic security tools, ThemeGuard understands **WordPress internals** �
 <td>
 
 ### 🧠 Intelligence Layer
-- **Cross-file correlation** — shared URLs, domains, campaigns
+- **Cross-file correlation** - shared URLs, domains, campaigns
 - **Malware family classification** (WP-VCD, WSO, AnonymousFox, etc.)
-- **Cloud threat intel** — URLhaus + WPScan API integration
+- **Cloud threat intel** - URLhaus + WPScan API integration
 - **C2/phone-home** communication detection
 - **Infection timeline** analysis
 
@@ -192,7 +192,7 @@ python themeguard.py
 python3 themeguard.py
 ```
 
-This launches the interactive menu — select an option and the scan starts:
+This launches the interactive menu - select an option and the scan starts:
 
 ```
 ╔══════════════════════════════════════════╗
@@ -231,7 +231,7 @@ python3 themeguard.py --path /var/www/html/wp-content/plugins/contact-form-7/ --
 ### 📂 Full wp-content Scan
 
 ```bash
-# Scan everything — themes, plugins, uploads, mu-plugins
+# Scan everything - themes, plugins, uploads, mu-plugins
 python3 themeguard.py --path /var/www/html/wp-content/ --type full
 ```
 
@@ -317,7 +317,7 @@ python3 -m unittest tests.test_scanner -v
 
 ---
 
-## ⚡ Quick Examples — Real World Scenarios
+## ⚡ Quick Examples - Real World Scenarios
 
 ```bash
 # Scenario 1: Check a downloaded theme (Kali)
@@ -412,7 +412,7 @@ python -m unittest tests.test_scanner tests.test_enterprise -v
 | `watcher.py` | Real-time watch with debounce |
 | `quarantine.py` | SHA-256 verified quarantine/restore |
 
-> Full list: **30 modules** — see [`docs/architecture.md`](docs/architecture.md)
+> Full list: **30 modules** - see [`docs/architecture.md`](docs/architecture.md)
 
 ---
 
@@ -443,7 +443,7 @@ python -m unittest tests.test_scanner tests.test_enterprise -v
 
 | Code | Meaning |
 |:----:|---------|
-| `0` | Clean — no critical/high findings |
+| `0` | Clean - no critical/high findings |
 | `1` | High severity issues found |
 | `2` | Critical threats detected |
 
