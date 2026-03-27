@@ -213,52 +213,52 @@ This launches the interactive menu - select an option and the scan starts:
 
 ```bash
 # Basic scan
-python3 themeguard.py --path /var/www/html/wp-content/themes/flavor/
+python3 themeguard.py --path ~/Downloads/flavor/
 
 # Deep scan (includes WP core integrity check)
-python3 themeguard.py --path /var/www/html/wp-content/themes/flavor/ --deep
+python3 themeguard.py --path ~/Downloads/flavor/ --deep
 
 # Show only high/critical findings
-python3 themeguard.py --path /var/www/html/wp-content/themes/flavor/ --severity high
+python3 themeguard.py --path ~/Downloads/flavor/ --severity high
 ```
 
 ### 🔌 Plugin Scan
 
 ```bash
-python3 themeguard.py --path /var/www/html/wp-content/plugins/contact-form-7/ --type plugin
+python3 themeguard.py --path ~/Downloads/contact-form-7/ --type plugin
 ```
 
 ### 📂 Full wp-content Scan
 
 ```bash
 # Scan everything - themes, plugins, uploads, mu-plugins
-python3 themeguard.py --path /var/www/html/wp-content/ --type full
+python3 themeguard.py --path ~/Downloads/wp-content/ --type full
 ```
 
 ### 🌐 Network Analysis (Cloud Intel)
 
 ```bash
 # Check URLs and hashes against URLhaus + WPScan API
-python3 themeguard.py --path /path/to/theme/ --network
+python3 themeguard.py --path ~/Downloads/flavor/ --network
 
 # Combine deep scan with network analysis
-python3 themeguard.py --path /path/to/theme/ --deep --network
+python3 themeguard.py --path ~/Downloads/flavor/ --deep --network
 ```
 
 ### 📊 Generating Reports
 
 ```bash
 # HTML report
-python3 themeguard.py --path /path/to/theme/ --report html
+python3 themeguard.py --path ~/Downloads/flavor/ --report html
 
 # JSON report
-python3 themeguard.py --path /path/to/theme/ --report json
+python3 themeguard.py --path ~/Downloads/flavor/ --report json
 
 # Both formats
-python3 themeguard.py --path /path/to/theme/ --report both
+python3 themeguard.py --path ~/Downloads/flavor/ --report both
 
 # SARIF format (for CI/CD integration)
-python3 themeguard.py --path /path/to/theme/ --report sarif
+python3 themeguard.py --path ~/Downloads/flavor/ --report sarif
 ```
 
 Reports are saved in the `reports/` directory.
@@ -267,7 +267,7 @@ Reports are saved in the `reports/` directory.
 
 ```bash
 # Automatically scans any file changes in real time
-python3 themeguard.py --path /var/www/html/wp-content/themes/flavor/ --watch
+python3 themeguard.py --path ~/Downloads/flavor/ --watch
 ```
 
 Watch mode features:
@@ -283,7 +283,7 @@ When critical or high-severity threats are found, quarantine the infected files:
 
 ```bash
 # Quarantine after scan
-python3 themeguard.py --path /path/to/theme/ --quarantine
+python3 themeguard.py --path ~/Downloads/flavor/ --quarantine
 
 # List quarantined files
 python3 themeguard.py --list-quarantine
@@ -320,21 +320,21 @@ python3 -m unittest tests.test_scanner -v
 ## ⚡ Quick Examples - Real World Scenarios
 
 ```bash
-# Scenario 1: Check a downloaded theme (Kali)
-python3 themeguard.py --path ~/Downloads/flavor-theme/ --deep --report html
+# Scenario 1: Check a downloaded theme
+python3 themeguard.py --path ~/Downloads/flavor/ --deep --report html
 
-# Scenario 2: Monitor a live server
-python3 themeguard.py --path /var/www/html/wp-content/ --type full --watch
+# Scenario 2: Monitor a theme folder for changes
+python3 themeguard.py --path ~/Downloads/flavor/ --watch
 
 # Scenario 3: Quick plugin check (Termux)
-python3 themeguard.py --path /sdcard/Download/plugin-folder/ --type plugin
+python3 themeguard.py --path /sdcard/Download/flavor/ --type plugin
 
 # Scenario 4: CI/CD pipeline integration
-python3 themeguard.py --path ./wp-content/themes/flavor/ --report sarif --severity high
+python3 themeguard.py --path ./flavor/ --report sarif --severity high
 # Exit code 0 = clean, 1 = high, 2 = critical
 
-# Scenario 5: Full client site audit
-python3 themeguard.py --path /var/www/client-site/wp-content/ --type full --deep --network --report both
+# Scenario 5: Full wp-content audit with network intel
+python3 themeguard.py --path ~/Downloads/wp-content/ --type full --deep --network --report both
 ```
 
 ---
@@ -347,7 +347,7 @@ ThemeGuard produces **triage-prioritized** reports:
 ============================================================
   THEMEGUARD TRIAGE REPORT
 ============================================================
-  Target:       /var/www/html/wp-content/themes/flavor
+  Target:       ~/Downloads/flavor
   Scan time:    2.47s
   Files:        847
   Total finds:  12
