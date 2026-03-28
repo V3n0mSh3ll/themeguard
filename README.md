@@ -95,24 +95,24 @@ Unlike generic security tools, ThemeGuard understands **WordPress internals** - 
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                   SCAN PIPELINE                       │
+│                   SCAN PIPELINE                      │
 ├──────────────────────────────────────────────────────┤
-│  Phase A: Prefilter                                   │
-│    file_walker → prefilter → file_classifier          │
-│                                                       │
-│  Phase B: Per-File Analysis (parallel)                │
-│    signatures → obfuscation → network → integrity     │
-│    → PHP deep → WP deep → threat engine → ML          │
-│    → recursive decoder → cloud intel                  │
-│                                                       │
-│  Phase C: Directory Scans                             │
-│    .htaccess → wp-config → polyglot → timeline        │
-│                                                       │
-│  Phase D: Post-Processing                             │
-│    dedup → correlate → score → suppress → filter      │
-│                                                       │
-│  Phase E: Output                                      │
-│    evidence store → triage report → HTML/JSON/SARIF   │
+│  Phase A: Prefilter                                  │
+│    file_walker → prefilter → file_classifier         │
+│                                                      │
+│  Phase B: Per-File Analysis (parallel)               │
+│    signatures → obfuscation → network → integrity    │
+│    → PHP deep → WP deep → threat engine → ML         │
+│    → recursive decoder → cloud intel                 │
+│                                                      │
+│  Phase C: Directory Scans                            │
+│    .htaccess → wp-config → polyglot → timeline       │
+│                                                      │
+│  Phase D: Post-Processing                            │
+│    dedup → correlate → score → suppress → filter     │
+│                                                      │
+│  Phase E: Output                                     │
+│    evidence store → triage report → HTML/JSON/SARIF  │
 └──────────────────────────────────────────────────────┘
 ```
 
